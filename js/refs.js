@@ -1,0 +1,27 @@
+export default function getRefs() {
+  return {
+    column: document.querySelector(".column"),
+    column2: document.querySelector(".column2"),
+    column3: document.querySelector(".column3"),
+    openModalBtn: document.querySelector("[data-modal-open]"),
+    closeModalBtn: document.querySelector("[data-modal-close]"),
+    closeModalBtn1: document.querySelector("[data-modal-close1]"),
+    closeModalBtn2: document.querySelector("[data-modal-close2]"),
+    cancelBtn: document.querySelector(".btn-close"),
+    addBtnArchiv: document.querySelector(".btn-add"),
+    modal: document.querySelector("[data-modal]"),
+    modal1: document.querySelector("[data-modal1]"),
+    modal2: document.querySelector("[data-modal2]"),
+    modal3: document.querySelector("[data-modal3]"),
+    form: document.querySelector(".modal-form"),
+    form1: document.querySelector(".modal-form1"),
+    form2: document.querySelector(".modal-form2"),
+    submitBtn: document.querySelector(".modal-send"),
+    unArchivBtn: document.querySelector(".unarchiv1"),
+    emptyText: document.querySelector(".modal2"),
+    categories: document.querySelector(".select-form"),
+    dateControl: document.querySelector('input[type="date"]'),
+    dateControl1: document.querySelector(".date"),
+    dateControl2: document.querySelector(".date2"),
+  };
+}

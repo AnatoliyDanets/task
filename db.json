@@ -1,0 +1,49 @@
+{
+  "tasks": [
+    {
+      "name": "Igor",
+      "createDate": "Fri Apr 15 2022",
+      "category": "Quote",
+      "todo": "nephew",
+      "date": "2022-04-15 2022-04-30",
+      "isActive": true,
+      "id": 1
+    },
+    {
+      "name": "Urec",
+      "createDate": "Fri Apr 15 2022",
+      "category": "Task",
+      "todo": "Bratan",
+      "date": "2022-04-29 2022-04-15",
+      "isActive": true,
+      "id": 4
+    },
+    {
+      "name": "Anya",
+      "createDate": "Fri Apr 15 2022",
+      "category": "Idea",
+      "todo": "sister",
+      "date": "2022-04-30",
+      "isActive": true,
+      "id": 5
+    },
+    {
+      "name": "Alla",
+      "createDate": "Fri Apr 15 2022",
+      "category": "Task",
+      "todo": "Mother",
+      "date": "2022-04-07",
+      "isActive": true,
+      "id": 6
+    },
+    {
+      "name": "human",
+      "createDate": "Fri Apr 15 2022",
+      "category": "Random Thought",
+      "todo": "from Kiev",
+      "date": "2022-04-17 2022-04-07",
+      "isActive": true,
+      "id": 7
+    }
+  ]
+}
