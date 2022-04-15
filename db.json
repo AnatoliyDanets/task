@@ -5,7 +5,7 @@
       "createDate": "Fri Apr 15 2022",
       "category": "Quote",
       "todo": "nephew",
-      "date": "2022-04-15 2022-04-30",
+      "date": "2022-04-30 2022-04-07",
       "isActive": true,
       "id": 1
     },
@@ -35,15 +35,6 @@
       "date": "2022-04-07",
       "isActive": true,
       "id": 6
-    },
-    {
-      "name": "human",
-      "createDate": "Fri Apr 15 2022",
-      "category": "Random Thought",
-      "todo": "from Kiev",
-      "date": "2022-04-17 2022-04-07",
-      "isActive": true,
-      "id": 7
     }
   ]
 }
