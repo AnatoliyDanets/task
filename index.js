@@ -40,7 +40,7 @@ function renderTable(arr) {
       <title>box-add</title>
       <path d="M26 2h-20l-6 6v21c0 0.552 0.448 1 1 1h30c0.552 0 1-0.448 1-1v-21l-6-6zM16 26l-10-8h6v-6h8v6h6l-10 8zM4.828 6l2-2h18.343l2 2h-22.343z"></path>
       </svg></button>
-      <button type="button" class="del"><svg class='icon-edit' version="1.1" xmlns="http://www.w3.org/2000/svg" fill="#7f8383" width="32" height="32" viewBox="0 0 32 32">
+      <button type="submit" class="del"><svg class='icon-edit' version="1.1" xmlns="http://www.w3.org/2000/svg" fill="#7f8383" width="32" height="32" viewBox="0 0 32 32">
       <title>bin</title>
       <path d="M4 10v20c0 1.1 0.9 2 2 2h18c1.1 0 2-0.9 2-2v-20h-22zM10 28h-2v-14h2v14zM14 28h-2v-14h2v14zM18 28h-2v-14h2v14zM22 28h-2v-14h2v14z"></path>
       <path d="M26.5 4h-6.5v-2.5c0-0.825-0.675-1.5-1.5-1.5h-7c-0.825 0-1.5 0.675-1.5 1.5v2.5h-6.5c-0.825 0-1.5 0.675-1.5 1.5v2.5h26v-2.5c0-0.825-0.675-1.5-1.5-1.5zM18 4h-6v-1.975h6v1.975z"></path>
@@ -52,15 +52,20 @@ function renderTable(arr) {
     .join("");
 }
 
-function submitForm(event) {
-  event.preventDefault();
-  console.log("Ok");
+function submitForm(e) {
+  let mainDate = refs.dateControl.value
+    .replace(/-/g, "/")
+    .split("/")
+    .reverse()
+    .join("/");
+
+  e.preventDefault();
   const newTask = {
     name: refs.form[0].value,
     createDate: today.toDateString(),
     category: refs.form[1].value,
     todo: refs.form[2].value,
-    date: refs.dateControl.value,
+    date: mainDate,
     isActive: true,
   };
 
@@ -76,19 +81,25 @@ function removeNote(e) {
 
 document.addEventListener("click", removeNote);
 function openModalChange(e) {
-  console.log();
   if (e.target.classList.contains("edit")) {
     refs.modal1.classList.toggle("is-hidden");
     getNoteId(e.target.parentNode.parentNode.parentNode.id).then((data) => {
       return Object.values(data).map((el, i, a) => {
+        let date = a[4].split(",");
+        if (date.length > 1) {
+          date.pop();
+        }
         return (
           (refs.form1[0].value = a[0]),
           (refs.form1[1].value = a[1]),
           (refs.form1[2].value = a[2]),
           (refs.form1[3].value = a[3]),
-          (refs.form1[4].value = a[4]),
-          refs.form1.childNodes[1].setAttribute("id", a[6]),
-          console.log(refs.form1.childNodes[1])
+          (refs.form1[4].value = date
+            .toString()
+            .split("/")
+            .reverse()
+            .join("-")),
+          refs.form1.childNodes[1].setAttribute("id", a[6])
         );
       });
     });
@@ -100,14 +111,24 @@ refs.closeModalBtn1.addEventListener("click", () => {
 });
 
 function submitChangeForm(e) {
+  let nextDate = refs.dateControl2.value
+    .replace(/-/g, "/")
+    .split("/")
+    .reverse()
+    .join("/");
+  let oldDay = refs.form1[4].value
+    .replace(/-/g, "/")
+    .split("/")
+    .reverse()
+    .join("/");
+
   e.preventDefault();
   const newTask = {
     name: refs.form1[0].value,
     createDate: today.toDateString(),
     category: refs.form1[2].value,
     todo: refs.form1[3].value,
-    date: (refs.dateControl1.value =
-      refs.dateControl1.value + "," + refs.dateControl2.value),
+    date: oldDay + ", " + nextDate,
     isActive: true,
   };
   const { id } = e.target.childNodes[1];
@@ -152,7 +173,7 @@ function renderTable3(arr) {
       <td>${el.category}</td>
       <td>${el.todo}</td>
       <td>${el.date}</td>
-      <td><button type="button" class="unarchiv"><svg
+      <td><button type="submit" class="unarchiv"><svg
       class="icon-edit"
       version="1.1"
       xmlns="http://www.w3.org/2000/svg"
@@ -177,38 +198,7 @@ function unArchivData(e) {
     const data = { isActive: true };
     let { id } = e.target.parentNode.parentNode;
     patchNote(id, data);
-    // let newIds = refs.column.childNodes;
-    // let findId = Array.from(newIds).find((el) => el.id === id);
-
-    // Array.from(e.target.parentNode.parentNode.parentNode.childNodes).map(
-    //   (el, i, a) => {
-    //     if (el.id === id) {
-    //       localStorage.removeItem(`${id}`);
-    //       console.log(
-    //         e.target.parentNode.parentNode.parentNode.removeChild(
-    //           e.target.parentNode.parentNode.parentNode.childNodes[i]
-    //         )
-    //       );
-    //     }
-    //   }
-    // );
   }
-
-  // let arcs =
-  //   e.target.parentNode.parentNode.parentNode.parentNode.childNodes[3].children;
-  // let par = localStorage.getItem("test");
-  // let arr = JSON.parse(par);
-  // for (let i = 0; i < arcs.length; i++) {
-  //   const arc = arcs[i];
-  //   for (let j = 0; j < arr.length; j++) {
-  //     const el = arr[j];
-  //     if (+arc.id === el.id) {
-  //       arc.classList.remove("visually-hidden");
-  //     } else if (Array.isArray(arcs)) {
-  //       return unArchivData(e);
-  //     }
-  //   }
-  // }
 }
 document.addEventListener("click", unArchivData);
 function toggleModal2() {

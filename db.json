@@ -2,37 +2,37 @@
   "tasks": [
     {
       "name": "Igor",
-      "createDate": "Fri Apr 15 2022",
+      "createDate": "Sat Apr 16 2022",
       "category": "Quote",
       "todo": "nephew",
-      "date": "2022-04-30 2022-04-07",
+      "date": "22/04/2022, 29/04/2022",
       "isActive": true,
       "id": 1
     },
     {
       "name": "Urec",
-      "createDate": "Fri Apr 15 2022",
+      "createDate": "Sat Apr 16 2022",
       "category": "Task",
       "todo": "Bratan",
-      "date": "2022-04-29 2022-04-15",
+      "date": "21/04/2022, 30/04/2022",
       "isActive": true,
       "id": 4
     },
     {
       "name": "Anya",
-      "createDate": "Fri Apr 15 2022",
+      "createDate": "Sat Apr 16 2022",
       "category": "Idea",
       "todo": "sister",
-      "date": "2022-04-30",
+      "date": "07/04/2022, 14/04/2022",
       "isActive": true,
       "id": 5
     },
     {
       "name": "Alla",
-      "createDate": "Fri Apr 15 2022",
+      "createDate": "Sat Apr 16 2022",
       "category": "Task",
       "todo": "Mother",
-      "date": "2022-04-07",
+      "date": "14/05/2022, 25/05/2022",
       "isActive": true,
       "id": 6
     }
