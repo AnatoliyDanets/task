@@ -19,9 +19,9 @@ const timeElapsed = Date.now();
 const today = new Date(timeElapsed);
 
 getNotes().then((tasks) => {
-  return refs.column.insertAdjacentHTML("beforeend", renderTable(tasks));
+  return refs.column.insertAdjacentHTML("beforeend", renderTableNotes(tasks));
 });
-function renderTable(arr) {
+function renderTableNotes(arr) {
   return arr
     .map((el, i, a) => {
       if (el.isActive == true)
@@ -30,7 +30,7 @@ function renderTable(arr) {
       <td>${el.createDate}</td>
       <td>${el.category}</td>
       <td>${el.todo}</td>
-      <td>${el.date}</td>
+      <td class='table-date'>${el.date}</td>
       <td>
       <div class="wrap-btn">
       <button type="button" class="edit"><svg class='icon-edit' version="1.1" xmlns="http://www.w3.org/2000/svg" fill="#7f8383" width="32" height="32" viewBox="0 0 32 32">
@@ -51,21 +51,79 @@ function renderTable(arr) {
     })
     .join("");
 }
+function addDateCell(e) {
+  if (e.target.classList.contains("table-date")) {
+    if (e.target.childNodes[0]) {
+      e.target.classList.add("add");
+    } else {
+      e.target.innerHTML =
+        ' <input type="date" name="date" id="date" class=" date" value="2022-04-07" min="2022-04-07"  max="2050-12-31"  />';
+    }
+  }
+}
+document.addEventListener("click", addDateCell);
+function addDate(e) {
+  if (e.target.classList.contains("date")) {
+    // e.target.parentNode.classList.add('add')
+    e.target.parentNode.classList.remove("table-date");
+    e.target.classList.remove("date");
+    const date = e.target.value
+      .replace(/-/g, "/")
+      .split("/")
+      .reverse()
+      .join("/");
+    const { id } = e.target.parentNode.parentNode;
+    const info = { id: id, date: date };
+    localStorage.setItem(`${id}`, JSON.stringify(info));
+    e.target.parentNode.innerHTML = date;
+    e.preventDefault();
+    const newDate = { date: date };
+    patchNote(id, newDate);
+  }
+}
+document.addEventListener("input", addDate);
+function secondDate(e) {
+  if (e.target.classList.contains("add")) {
+    console.log(
+      e.target.insertAdjacentHTML(
+        "beforeend",
+        ' <input type="date" name="date1" id="date1" class=" date1" value="2022-04-07" min="2022-04-07"  max="2050-12-31"  />'
+      )
+    );
+  }
+}
+document.addEventListener("click", secondDate);
+
+function secDate(e) {
+  if (e.target.classList.contains("date1")) {
+    const date =
+      "," +
+      " " +
+      e.target.value.replace(/-/g, "/").split("/").reverse().join("/");
+    e.target.parentNode.insertAdjacentHTML("beforeend", date);
+    const { id } = e.target.parentNode.parentNode;
+    console.log(typeof e.target.parentNode);
+    const getLocalInfo = localStorage.getItem(`${id}`);
+    const parseLocalInfo = JSON.parse(getLocalInfo);
+    if (parseLocalInfo.id === id) {
+      // e.preventDefault();
+      const newDate = { date: parseLocalInfo.date + date };
+      e.target.remove();
+
+      patchNote(id, newDate);
+    }
+  }
+}
+document.addEventListener("input", secDate);
 
 function submitForm(e) {
-  let mainDate = refs.dateControl.value
-    .replace(/-/g, "/")
-    .split("/")
-    .reverse()
-    .join("/");
-
   e.preventDefault();
   const newTask = {
     name: refs.form[0].value,
     createDate: today.toDateString(),
     category: refs.form[1].value,
     todo: refs.form[2].value,
-    date: mainDate,
+    date: "",
     isActive: true,
   };
 
@@ -85,21 +143,14 @@ function openModalChange(e) {
     refs.modal1.classList.toggle("is-hidden");
     getNoteId(e.target.parentNode.parentNode.parentNode.id).then((data) => {
       return Object.values(data).map((el, i, a) => {
-        let date = a[4].split(",");
-        if (date.length > 1) {
-          date.pop();
-        }
         return (
           (refs.form1[0].value = a[0]),
           (refs.form1[1].value = a[1]),
           (refs.form1[2].value = a[2]),
           (refs.form1[3].value = a[3]),
-          (refs.form1[4].value = date
-            .toString()
-            .split("/")
-            .reverse()
-            .join("-")),
-          refs.form1.childNodes[1].setAttribute("id", a[6])
+          (refs.form1[4].value = a[4]),
+          refs.form1.childNodes[1].setAttribute("id", a[6]),
+          console.log(refs.form1.childNodes[1])
         );
       });
     });
@@ -111,24 +162,13 @@ refs.closeModalBtn1.addEventListener("click", () => {
 });
 
 function submitChangeForm(e) {
-  let nextDate = refs.dateControl2.value
-    .replace(/-/g, "/")
-    .split("/")
-    .reverse()
-    .join("/");
-  let oldDay = refs.form1[4].value
-    .replace(/-/g, "/")
-    .split("/")
-    .reverse()
-    .join("/");
-
   e.preventDefault();
   const newTask = {
     name: refs.form1[0].value,
     createDate: today.toDateString(),
     category: refs.form1[2].value,
     todo: refs.form1[3].value,
-    date: oldDay + ", " + nextDate,
+    date: refs.form1[4].value,
     isActive: true,
   };
   const { id } = e.target.childNodes[1];
@@ -159,10 +199,10 @@ refs.addBtnArchiv.addEventListener("click", fetchActive);
 getNotes().then((tasks) => {
   tasks.every((el) => el.isActive == true)
     ? (refs.column3.innerHTML = "<h2 style=font-size:50px;>Not Notes</h2>")
-    : refs.column3.insertAdjacentHTML("beforeend", renderTable3(tasks));
+    : refs.column3.insertAdjacentHTML("beforeend", renderTableArchived(tasks));
 });
 
-function renderTable3(arr) {
+function renderTableArchived(arr) {
   if (arr.length > 0) {
     return arr
       .map((el, i, a) => {
@@ -209,76 +249,51 @@ refs.closeModalBtn2.addEventListener("click", toggleModal2);
 
 function archivedCategories() {
   getNotes().then((tasks) => {
-    const arr = tasks.reduce(
-      (acc, el) => {
-        if (el.category == "Task") {
-          acc.category = el.category;
-          if (el.isActive) {
-            acc.isAct += 1;
-          } else {
-            acc.isArchived += 1;
+    const arr = tasks.map((val) => {
+      const ar = tasks.reduce(
+        (acc, el) => {
+          if (val.category === el.category) {
+            acc.category = el.category;
+            if (el.isActive) {
+              acc.active += 1;
+            } else {
+              acc.archived += 1;
+            }
           }
-        }
-        return acc;
-      },
-      { category: "", isAct: 0, isArchived: 0 }
-    );
-    const arr2 = tasks.reduce(
-      (acc, el) => {
-        if (el.category == "Idea") {
-          acc.category = el.category;
-          if (el.isActive) {
-            acc.isAct += 1;
-          } else {
-            acc.isArchived += 1;
-          }
-        }
-        return acc;
-      },
-      { category: "", isAct: 0, isArchived: 0 }
-    );
-    const arr3 = tasks.reduce(
-      (acc, el) => {
-        if (el.category == "Quote") {
-          acc.category = el.category;
-          if (el.isActive) {
-            acc.isAct += 1;
-          } else {
-            acc.isArchived += 1;
-          }
-        }
-        return acc;
-      },
-      { category: "", isAct: 0, isArchived: 0 }
-    );
-    const arr4 = tasks.reduce(
-      (acc, el) => {
-        if (el.category == "Random Thought") {
-          acc.category = el.category;
-          if (el.isActive) {
-            acc.isAct += 1;
-          } else {
-            acc.isArchived += 1;
-          }
-        }
-        return acc;
-      },
-      { category: "", isAct: 0, isArchived: 0 }
+          return acc;
+        },
+        { category: "", active: 0, archived: 0 }
+      );
+      return ar;
+    });
+
+    console.log(arr);
+
+    const newArr = arr.reduce(
+      (acc, el) => (
+        acc.find(({ category }) => el.category === category) || acc.push(el),
+        acc
+      ),
+      []
     );
 
-    const newArr = [arr, arr2, arr3, arr4].filter((el) => el.category !== "");
+    console.log(newArr);
 
-    return refs.column2.insertAdjacentHTML("beforeend", renderTable2(newArr));
+    return refs.column2.insertAdjacentHTML(
+      "beforeend",
+      renderTableCount(newArr)
+    );
   });
 }
-function renderTable2(arr) {
+function renderTableCount(arr) {
   return arr
-    .map((el, i, a) => {
+    .map((el) => {
       return `<tr><td>${el.category}</td>
-    <td>${el.isAct}</td>
-    <td>${el.isArchived}</td>
+    <td>${el.active}</td>
+    <td>${el.archived}</td>
     </tr>`;
     })
     .join("");
 }
+
 archivedCategories();

@@ -5,16 +5,16 @@
       "createDate": "Sat Apr 16 2022",
       "category": "Quote",
       "todo": "nephew",
-      "date": "22/04/2022, 29/04/2022",
+      "date": "20/04/2022, 13/04/2022",
       "isActive": true,
       "id": 1
     },
     {
       "name": "Urec",
-      "createDate": "Sat Apr 16 2022",
+      "createDate": "Sun Apr 17 2022",
       "category": "Task",
       "todo": "Bratan",
-      "date": "21/04/2022, 30/04/2022",
+      "date": "13/04/2022",
       "isActive": true,
       "id": 4
     },
@@ -23,17 +23,17 @@
       "createDate": "Sat Apr 16 2022",
       "category": "Idea",
       "todo": "sister",
-      "date": "07/04/2022, 14/04/2022",
+      "date": "12/04/2022",
       "isActive": true,
       "id": 5
     },
     {
       "name": "Alla",
-      "createDate": "Sat Apr 16 2022",
+      "createDate": "Sun Apr 17 2022",
       "category": "Task",
       "todo": "Mother",
-      "date": "14/05/2022, 25/05/2022",
-      "isActive": true,
+      "date": "13/04/2022",
+      "isActive": false,
       "id": 6
     }
   ]
